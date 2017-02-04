@@ -93,19 +93,22 @@ void setup(void)
 {
   ///// set up gyro and printing
       #ifndef ESP8266
+        /* This code is confusing because to me it seems as though we don't need it
+	    We are not using the ESP8266, so why do we need to check if it's defined?
+	    -Josh */
         while (!Serial);     // will pause Zero, Leonardo, etc until serial console opens
       #endif
         Serial.begin(9600);
       //  Serial.println(F("LSM9DS0 9DOF Sensor Test")); Serial.println("");
         
-        /* Initialise the sensor */
+        /* Initialise the gyro sensor */
         if(!lsm.begin())
         {
           /* There was a problem detecting the LSM9DS0 ... check your connections */
           Serial.print(F("Ooops, no LSM9DS0 detected ... Check your wiring or I2C ADDR!"));
           while(1);
         }
-      //  Serial.println(F("Found LSM9DS0 9DOF"));
+        Serial.println(F("Found LSM9DS0 9DOF"));
         
         /* Display some basic information on this sensor */
         displaySensorDetails();
@@ -126,7 +129,7 @@ void setup(void)
        
         //biasx = gyro.gyro.x + biasx; 
       
-      biasz = gyro.gyro.z + biasz;
+     	biasz = gyro.gyro.z + biasz;
       }
       
       biasz = biasz/100.;
@@ -144,7 +147,7 @@ void setup(void)
 
 void loop(void) 
 {  
-  ///// update angle estimate
+      // update angle estimate
       /* Get a new sensor event */ 
       sensors_event_t accel, mag, gyro, temp;
     
@@ -162,6 +165,10 @@ void loop(void)
       
   ///// do turning algorithm
       pot_value = analogRead(pot_pin);
+	
+      /* Turns voltage input value modified by potentiometer into
+      	 a radian value used by the turn function to fix turn amount
+	*/
       theta_next = mapfloat(pot_value,0,1023,0,2*PI); // min = 0 rad. max = 2 PI rad
 
       
