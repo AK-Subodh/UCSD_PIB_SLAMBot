@@ -1,17 +1,4 @@
-	/* HC-SR04 Ping distance sensor
-
-	These are the pin connections: 
-	VCC to Arduino 5V
-	GND to Arduino GND	
-	Echo to Arduino pin 13
-	Trig to Arduino pin 12
-	*/
-	
-	#define trigPin 12  // Trig Pin On Sensor To DIGITAL PIN 12 ON ARDUINO // 
-	#define echoPin 13  // Echo Pin on Sensor To DIGITAL PIN 13 ON ARDUINO //
-
-	
-	// related to turn angle code
+///// related to turn angle code
 
         //Tests turning of the car. Input is a theta angle given by a potentiometer, where min = 0 rad, max = 2 PI rad. 
         //Tune by adjusting k_motor and dt_turning and fudge_factor. check L_wheelbase and r_wheel  
@@ -147,6 +134,28 @@ void setup(void)
       
       biasz = biasz/100.;
       delay(0);
+
+/* 
+Comment by Ammar
+
+Ultrasonic Sensor Code is in this part? - We'll trial and error to see where it fits.
+Measures Distance from car to the surface. 
+Regular Distance measured by testing was around  6 - 15 cm. 
+When driving off, the ultrasonic sensor measured huge distance ( ~ 96 cm). That means it's measuring distance to the ground. 
+
+So, the exact moment the ultrasonic sensor measures distance to the ground => An edge has been recognized by the car. 
+
+Once an edge has been recognized by the car => Call The Turn Function to turn away from the edge to avoid falling off.
+
+Within the Turn Function => Make our theta_next = theta_current + (PI/2) // All angles are in radians /// 
+
+This is assuming that we are testing on a square table with 4 corners (all 90 degrees). 
+
+There may be a delay. Perhaps not from the ultrasonic sensor, but probably from the bluetooth.
+
+That way, all turns that avoid edges, will be 90 degrees away from the edge it's about to fall of from.
+
+*/
 
   ///// set up turning algorithm
       pinMode(pot_pin, INPUT);
