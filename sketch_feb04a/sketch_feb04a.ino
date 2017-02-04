@@ -1,4 +1,17 @@
-///// related to turn angle code
+	/* HC-SR04 Ping distance sensor
+
+	These are the pin connections: 
+	VCC to Arduino 5V
+	GND to Arduino GND	
+	Echo to Arduino pin 13
+	Trig to Arduino pin 12
+	*/
+	
+	#define trigPin 12  // Trig Pin On Sensor To DIGITAL PIN 12 ON ARDUINO // 
+	#define echoPin 13  // Echo Pin on Sensor To DIGITAL PIN 13 ON ARDUINO //
+
+	
+	// related to turn angle code
 
         //Tests turning of the car. Input is a theta angle given by a potentiometer, where min = 0 rad, max = 2 PI rad. 
         //Tune by adjusting k_motor and dt_turning and fudge_factor. check L_wheelbase and r_wheel  
