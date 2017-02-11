@@ -54,6 +54,7 @@
         double biasz = 0; 
         Adafruit_LSM9DS0 lsm = Adafruit_LSM9DS0(1000);  // Use I2C, ID #1000
         
+	/*
         #define LSM9DS0_XM_CS 10
         #define LSM9DS0_GYRO_CS 9
         
@@ -61,6 +62,7 @@
         #define LSM9DS0_SCLK 13
         #define LSM9DS0_MISO 12
         #define LSM9DS0_MOSI 11
+	*/
         
         void displaySensorDetails(void)
         {
