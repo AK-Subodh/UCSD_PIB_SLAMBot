@@ -1,14 +1,21 @@
-	/* HC-SR04 Ping distance sensor
+	/* 
+	HC-SR04 Ultrasonic Distance Sensor
 
-	These are the pin connections: 
+	Pin connections: 
 	VCC to Arduino 5V
 	GND to Arduino GND	
 	Echo to Arduino pin 13
 	Trig to Arduino pin 12
+	
+	LSM9DS0 Gyroscope Sensor
+	Potentiometer
+	
 	*/
 	
-	#define trigPin 12  // Trig Pin On Sensor To DIGITAL PIN 12 ON ARDUINO // 
-	#define echoPin 13  // Echo Pin on Sensor To DIGITAL PIN 13 ON ARDUINO //
+	#define trigPin 8  // Trig Pin On Sensor To DIGITAL PIN 8 ON ARDUINO // 
+	#define echoPin 7  // Echo Pin on Sensor To DIGITAL PIN 7 ON ARDUINO //
+	long duration;
+	int distance;
 
         //Tests turning of the car. Input is a theta angle given by a potentiometer, where min = 0 rad, max = 2 PI rad. 
         //Tune by adjusting k_motor and dt_turning and fudge_factor. check L_wheelbase and r_wheel  
@@ -47,6 +54,7 @@
         double biasz = 0; 
         Adafruit_LSM9DS0 lsm = Adafruit_LSM9DS0(1000);  // Use I2C, ID #1000
         
+	/*
         #define LSM9DS0_XM_CS 10
         #define LSM9DS0_GYRO_CS 9
         
@@ -54,6 +62,7 @@
         #define LSM9DS0_SCLK 13
         #define LSM9DS0_MISO 12
         #define LSM9DS0_MOSI 11
+	*/
         
         void displaySensorDetails(void)
         {
@@ -94,10 +103,12 @@
 /////
 
 
-
+//
 void turn( double theta_next, double theta_current, double motor_drive_forward );
 
 float mapfloat(long x, long in_min, long in_max, long out_min, long out_max);
+
+int calculateDistance();
 
 void setup(void) 
 {
@@ -166,7 +177,10 @@ There may be a delay. Perhaps not from the ultrasonic sensor, but probably from 
 That way, all turns that avoid edges, will be 90 degrees away from the edge it's about to fall of from.
 
 */
-
+	// Set up Ultrasonic Sensor Pins
+	pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
+	pinMode(echoPin, INPUT); // Sets the echoPin as an Input
+	
   ///// set up turning algorithm
       pinMode(pot_pin, INPUT);
       theta_current = 0;
@@ -282,5 +296,19 @@ void turn( double theta_next, double theta_current, double motor_drive_forward )
 float mapfloat(long x, long in_min, long in_max, long out_min, long out_max)
 {
  return (float)(x - in_min) * (out_max - out_min) / (float)(in_max - in_min) + out_min;
+}
+
+//Calculates distance and returns it as an integer value
+int calculateDistance(){ 
+  
+  digitalWrite(trigPin, LOW); 
+  delayMicroseconds(2);
+  // Sets the trigPin on HIGH state for 10 micro seconds
+  digitalWrite(trigPin, HIGH); 
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  duration = pulseIn(echoPin, HIGH); // Reads the echoPin, returns the sound wave travel time in microseconds
+  distance= duration*0.034/2;
+  return distance;
 }
 
