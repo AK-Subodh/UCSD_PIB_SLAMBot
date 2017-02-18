@@ -45,6 +45,8 @@ void setup() {
 #endif
 //  Serial.println(F("LSM9DS0 9DOF Sensor Test")); Serial.println("");
   
+  Serial.println("Initiailizing setup.");
+  
   /* Initialise the sensor */
   if(!lsm.begin())
   {
@@ -67,10 +69,13 @@ void setup() {
   
   // Configure digital for OUTPUT
   pinMode(led,OUTPUT);
+  
+  Serial.println("Intialized setup.");
 }
 
 // Main
 void loop() {
+  Serial.println("Inside the loop.");
   while (!ack) {
     ack = getAck();    
     delay(3000);
@@ -89,6 +94,8 @@ void loop() {
 
 // Performs serial command based on user input
 void doSerialCmd( byte cmd ) {
+  Serial.println("Performing serial command.");
+  
   switch( cmd ) {
     // Turn LED HIGH
     case ('h'):
@@ -119,6 +126,8 @@ void doSerialCmd( byte cmd ) {
 // Prompts User for input serial command
 //    Returns serial command
 byte getSerialCmd() {
+  Serial.println("Please enter a command");
+  
   byte inByte;
   if (Serial.available()) {
     inByte = Serial.read();
@@ -130,12 +139,14 @@ byte getSerialCmd() {
 
 // Turns LED ON and writes to Serial
 void ledON() {
+  Serial.println("Turning LED on");
   digitalWrite(led, HIGH);
   Serial.write("    The LED is ON!");
 }
 
 // Turns LED OFF and writes to Serial
 void ledOFF() {
+  Serial.println("Turning LED off");
   digitalWrite(led, LOW);
   Serial.write("    The LED is OFF!");
 }
@@ -180,6 +191,7 @@ void acceRead() {
 
 // Prints the command list
 void printCmdList() {
+  Serial.println("Inside command list"); 
   Serial.write("    Commands:\r\n");
   Serial.write("      <h>    Turn ON LED\r\n");
   Serial.write("      <l>    Turn OFF LED\r\n");  
@@ -202,6 +214,7 @@ void printNewLn() {
 
 byte getAck() {
 Serial.write("\r\nPress <c> for command list\r\n");
+  Serial.println("Inside getAck()");
     Serial.write(">");
     // having this if statement messes up the next loop. fails the conditional statement
     //if (Serial.available()){
@@ -223,7 +236,7 @@ Serial.write("\r\nPress <c> for command list\r\n");
 void displaySensorDetails(void)
 {
   sensor_t accel, mag, gyro, temp;
-  
+  Serial.println("Receiving display sensor details");
   lsm.getSensor(&accel, &mag, &gyro, &temp);
   
   delay(500);
@@ -231,6 +244,7 @@ void displaySensorDetails(void)
 
 void configureSensor(void)
 {
+  Serial.println("Configuring sensors");
   // 1.) Set the accelerometer range
   lsm.setupAccel(lsm.LSM9DS0_ACCELRANGE_2G);
   //lsm.setupAccel(lsm.LSM9DS0_ACCELRANGE_4G);
