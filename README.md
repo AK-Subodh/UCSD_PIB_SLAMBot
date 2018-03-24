@@ -5,5 +5,7 @@ S.L.A.M Code for the Arduino IDE combines ultrasonic sensor code, gyroscope code
 Editors:
 
 Ammar Babikir - Lead
-
-Joshua Hernandez - Team Member
+Simon Fong 
+Nicholas Ha 
+Wilson Tran 
+Eric Ho
